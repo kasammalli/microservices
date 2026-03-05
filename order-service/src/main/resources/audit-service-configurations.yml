@@ -1,0 +1,15 @@
+# Audit configuration for order service.
+# Actions and attributes are validated against these lists (audit still saved if not listed).
+
+audit:
+  entities:
+    order:
+      actions:
+        - orderCreate
+        - orderUpdate
+      attributes:
+        - quantity
+        - deliverySlot
+        - items
+        - orderNumber
+        - storeId

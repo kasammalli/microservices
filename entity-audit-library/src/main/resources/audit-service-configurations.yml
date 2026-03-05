@@ -1,0 +1,25 @@
+# Audit service configuration - override in microservice's src/main/resources if needed.
+# Defines allowed actions and trackable attributes per entity type.
+
+audit:
+  entities:
+    order:
+      actions:
+        - orderCreate
+        - orderUpdate
+      attributes:
+        - quantity
+        - deliverySlot
+        - items
+        - orderNumber
+        - storeId
+    # Example for another microservice:
+    # shipment:
+    #   actions:
+    #     - shipmentCreate
+    #     - shipmentUpdate
+    #     - shipmentCancel
+    #   attributes:
+    #     - status
+    #     - trackingNumber
+    #     - estimatedDelivery

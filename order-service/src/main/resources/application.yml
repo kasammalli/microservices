@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: order-service
+  config:
+    import: optional:classpath:audit-service-configurations.yml
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/orderdb
+
+server:
+  port: 8080
