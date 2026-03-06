@@ -2,6 +2,7 @@ package com.example.audit.config;
 
 import com.example.audit.repository.AuditEventRepository;
 import com.example.audit.service.AuditService;
+import com.example.audit.service.impl.AsyncAuditPersistenceDelegate;
 import com.example.audit.service.impl.AsyncAuditServiceImpl;
 import jakarta.validation.Validator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -41,10 +42,17 @@ public class EntityAuditAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(AsyncAuditPersistenceDelegate.class)
+    public AsyncAuditPersistenceDelegate asyncAuditPersistenceDelegate(
+            AuditEventRepository auditEventRepository,
+            AuditConfigurationProperties config) {
+        return new AsyncAuditPersistenceDelegate(auditEventRepository, config);
+    }
+
+    @Bean
     @ConditionalOnMissingBean(AuditService.class)
-    public AuditService auditService(AuditEventRepository auditEventRepository,
-                                      AuditConfigurationProperties config,
-                                      Validator validator) {
-        return new AsyncAuditServiceImpl(auditEventRepository, config, validator);
+    public AuditService auditService(Validator validator,
+                                      AsyncAuditPersistenceDelegate persistenceDelegate) {
+        return new AsyncAuditServiceImpl(validator, persistenceDelegate);
     }
 }
